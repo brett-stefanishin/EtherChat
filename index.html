@@ -1,18 +1,38 @@
-<DOCTYPE! HTML>
+<!DOCTYPE HTML>
 <html>
-  <title> EtherChat </title>
+<title> <b> EtherChat </b> </title>
   <head>
   <center> <h1> EtherChat </h1> </center>
   </head>
-  <body>
-  <h3> My Messages </h3>
-  <table>
-    <t1> From </t1>
-      <ul id="Sender"> </ul>
-    <t2> Message Title</t2>
-      <ul id="MessageTitle"> </ul>
-    <t1> Message Preview</t1>
-      <ul id="MessagePreview"> </ul>
+  <body class = "container">
+  <div class ="table-responsive">
+  <table class = "table table-bordered">
+      <thead>
+        <tr>
+          <th> From </th>
+          <th> Message Title </th>
+          <th> Message Preview </th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td id = "addressOfSender"> </td>
+        </tr>
+        <tr>
+          <td id = "messageTitle"></td>
+        </tr>
+        <tr>
+          <td id = "messagePreview"></td>
+        </tr>
+      </tbody>
   </table>
+  </div>
+  <center> <h3> Compose New Message </h3> </center>
+  <center> <input type="text" placeholder="Address" id="RecipientAddress" /> </center>
+  <center> <input type="text" placeholder="Title Of Message" id="MessageTitle" /> </center>
+  <center> <input type="text" placeholder="Message Contents" id="MessageContent" /> </center>
+  <center> <a href="#" onclick="UrgentSendMessage()" class="btn btn-danger"> Urgent Send </a> </center>
+  <center> <a href="#" onclick="NormalSendMessage()" class="btn btn-success"> Normal Send </a> </center>
+  <center> <p1 id ="ConfirmationMessage"> </p1></center>
   </body>
 </html>
