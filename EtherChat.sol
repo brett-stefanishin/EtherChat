@@ -42,11 +42,12 @@ contract EtherChat {
         
     }
     
-    function SendNewMessage(address _recip, string _title, string _contents, bool _urgent) payable {
+    function SendNewMessage(address _recip, string _title, string _contents, bool _urgent) payable returns (string) {
         Conversation[msg.sender][_recip][ConversationLength[msg.sender][_recip]] 
             = Message(msg.sender, _recip, _title, _contents, _urgent);
             
         ConversationLength[msg.sender][_recip]++;
+        return "Success"; 
     }
     
     function AddAsContact(address _contactAddress, string _name_of_contact,
