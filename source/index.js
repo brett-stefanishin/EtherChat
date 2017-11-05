@@ -10,7 +10,7 @@ function UrgentSendMessage() {
   messagetitle = $("#MessageTitle").val();
   messagecontents = $("#MessageContent").val();
   contractInstance.SendNewMessage(msg.sender,useraddress,messagetitle,messagecontents,true {from: web3.eth.accounts[0]}, function() {
-    
+
     $("#" + div_id).html(contractInstance.totalVotesFor.call(candidateName).toString());
   });
 }
@@ -26,6 +26,8 @@ function NormalSendMessage() {
 }
 
 $(document).ready(function() {
+
+
   candidateNames = Object.keys(candidates);
   for (var i = 0; i < candidateNames.length; i++) {
     let name = candidateNames[i];
