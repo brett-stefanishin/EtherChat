@@ -15,23 +15,25 @@ $ truffle console
 pragma solidity ^0.4.16;
 
 contract EtherChat {
+    
   struct Message {
     address Sender;
     address Recipient;
     string TitleOfMessage;
     string MessageContents;
+    uint EtherSent;
   }
 
   mapping (address => uint) public ECHAT;
 
   mapping (address => string) public Username;
-  mapping (address => mapping (uint => Message)) public myMessage;
+  mapping (address => mapping (uint => Message)) public MyMessage;
   mapping (address => uint) NumberOfMessages;
 
   event NewMsg(address recip, address sender, string title, string contents);
 
   function SendMessage(address _recip, string _title, string _contents) payable {
-    Message NewMessage = Message(msg.sender, _recip, _title, _contents);
+    Message storage NewMessage = Message(msg.sender, _recip, _title, _contents, msg.value);
     MyMessage[_recip][NumberOfMessages[_recip]] = NewMessage;
     NumberOfMessages[_recip]++;
     NewMsg(_recip, msg.sender, _title, _contents);
@@ -39,16 +41,16 @@ contract EtherChat {
 
   function GetMessageSenderUsername(uint i) public constant returns (string) {
     Message msgSender = MyMessage[msg.sender][i];
-    return ContactName[msgSender.Sender];
+    return Username[msgSender.Sender];
   }
 
   function GetMessageSenderAddress(uint _i_) public constant returns (address) {
-    Message _Sender = MyMessage[msg.sender][i];
-    return _Sender;
+    Message _Sender = MyMessage[msg.sender][_i_];
+    return _Sender.Sender;
   }
 
   function GetMessageTitle(uint i_) public constant returns (string) {
-    Message msgTitle  MyMessage[msg.sender][i_];
+    Message msgTitle = MyMessage[msg.sender][i_];
     return msgTitle.TitleOfMessage;
   }
 
@@ -56,8 +58,13 @@ contract EtherChat {
     MyMessage[msg.sender][_i];
   }
 
+  function GetMessageEtherSent(uint __i) public constant returns (uint) {
+    Message msgEth = MyMessage[msg.sender][__i];
+    return msgEth.EtherSent;
+  }
+
   function GetEtherBalance() public constant returns (uint) {
-    return msg.balance;
+    return msg.sender.balance;
   }
 
   function GetTokenBalance() public constant returns (uint) {
