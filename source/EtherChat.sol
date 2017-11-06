@@ -33,7 +33,13 @@ contract EtherChat {
   event NewMsg(address recip, address sender, string title, string contents);
 
   function SendMessage(address _recip, string _title, string _contents) payable {
-    Message storage NewMessage = Message(msg.sender, _recip, _title, _contents, msg.value);
+    Message storage NewMessage;
+    NewMessage.Sender = msg.sender;
+    NewMessage.Recipient = _recip;
+    NewMessage.TitleOfMessage = _title;
+    NewMessage.MessageContents = _contents; 
+    NewMessage.EtherSent = msg.value;
+    
     MyMessage[_recip][NumberOfMessages[_recip]] = NewMessage;
     NumberOfMessages[_recip]++;
     NewMsg(_recip, msg.sender, _title, _contents);
