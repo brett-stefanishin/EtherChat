@@ -15,59 +15,56 @@ $ truffle console
 pragma solidity ^0.4.16;
 
 contract EtherChat {
-    address public EtherChatAdministrator;
+  struct Message {
+    address Sender;
+    address Recipient;
+    string TitleOfMessage;
+    string MessageContents;
+  }
 
-    struct Message {
-        address Sender;
-        address Recipient;
-        string TitleOfMessage;
-        string MessageContents;
-        bool IsUrgent;
-    }
+  mapping (address => uint) public ECHAT;
 
-    struct ContactInformation {
-        string Name;
-        string UserHomeCountry;
-        string PhotoURL;
-        address UserAddress;
-        uint PhoneNumber;
-    }
+  mapping (address => string) public Username;
+  mapping (address => mapping (uint => Message)) public myMessage;
+  mapping (address => uint) NumberOfMessages;
 
-    /** Add a struct for requesting certain currencies **/
+  event NewMsg(address recip, address sender, string title, string contents);
 
-    mapping (address => mapping (address => mapping (uint => Message))) Conversation;
-    mapping (address => mapping (address => uint)) ConversationLength;
-    mapping (address => mapping (address => ContactInformation)) Contact;
-    mapping (address => bool) HasNewMessage;
+  function SendMessage(address _recip, string _title, string _contents) payable {
+    Message NewMessage = Message(msg.sender, _recip, _title, _contents);
+    MyMessage[_recip][NumberOfMessages[_recip]] = NewMessage;
+    NumberOfMessages[_recip]++;
+    NewMsg(_recip, msg.sender, _title, _contents);
+  }
 
-    function EtherChat() {
-      EtherChatAdministrator = msg.sender;
-    }
+  function GetMessageSenderUsername(uint i) public constant returns (string) {
+    Message msgSender = MyMessage[msg.sender][i];
+    return ContactName[msgSender.Sender];
+  }
 
-    function SendNewMessage(address _recip, string _title, string _contents, bool _urgent) payable returns (string) {
-        Conversation[msg.sender][_recip][ConversationLength[msg.sender][_recip]]
-            = Message(msg.sender, _recip, _title, _contents, _urgent);
+  function GetMessageSenderAddress(uint _i_) public constant returns (address) {
+    Message _Sender = MyMessage[msg.sender][i];
+    return _Sender;
+  }
 
-        HasNewMessage[msg.sender] = true;
-        ConversationLength[msg.sender][_recip]++;
-        return "Success";
-    }
+  function GetMessageTitle(uint i_) public constant returns (string) {
+    Message msgTitle  MyMessage[msg.sender][i_];
+    return msgTitle.TitleOfMessage;
+  }
 
-    function AddAsContact(address _contactAddress, string _name_of_contact,
-    string HomeCountry, string URL, address useraddress, uint phone) {
-        Contact[msg.sender][_contactAddress] =
-        ContactInformation(_name_of_contact, HomeCountry, URL, useraddress, phone);
-    }
+  function GetMessageContent(uint _i) public constant returns (string) {
+    MyMessage[msg.sender][_i];
+  }
 
-    function NewMessage() constant returns (Message) {
-        require(HasNewMessage[msg.sender] == true);
-    }
+  function GetEtherBalance() public constant returns (uint) {
+    return msg.balance;
+  }
 
-    function ViewContact(address _contact) constant returns (ContactInformation) {
-        return Contact[msg.sender][_contact];
-    }
+  function GetTokenBalance() public constant returns (uint) {
+    return ECHAT[msg.sender];
+  }
 
-    function ShowMyConversation(address _recipient, uint index) constant returns(Message) {
-      return Conversation
-    }
+  function CreateMyUsername(string username) {
+    Username[msg.sender] = username;
+  }
 }
